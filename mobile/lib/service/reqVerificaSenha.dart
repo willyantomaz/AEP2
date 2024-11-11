@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ReqVerificaSenha {
-  Future<void> verificaSenha(String password) async {
+  Future<String> verificaSenha(String password) async {
+    print(password);
     final response = await http.post(
-      Uri.parse('http://localhost:3000/verificaSenha'),
+      Uri.parse('http://localhost:5000/analyze'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -14,9 +15,26 @@ class ReqVerificaSenha {
     );
 
     if (response.statusCode == 200) {
-      print('Senha forte');
+      print('${jsonDecode(response.body)}');
+      return jsonDecode(response.body).toString();
     } else {
-      print('Senha fraca');
+      throw Exception('Não foi possivel testar a senha');
+    }
+  }
+
+  Future<String> forcaSenha(String password) async {
+    final url = Uri.parse('http://<your-server-address>/predict');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'password': password}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['vulnerability'].toString();
+    } else {
+      throw Exception('Failed to verify password');
     }
   }
 }

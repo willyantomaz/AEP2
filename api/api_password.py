@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 import re
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 
 app = Flask(__name__)
+CORS(app)
 
 def train_model():
     X_train = np.array([

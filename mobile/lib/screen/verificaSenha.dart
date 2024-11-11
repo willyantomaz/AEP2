@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/screen/dialogResponse.dart';
 import 'package:mobile/service/reqVerificaSenha.dart';
 
 class Vericasenha extends StatefulWidget {
@@ -21,6 +22,7 @@ class _VericasenhaState extends State<Vericasenha> {
       ),
       body: Center(
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -28,11 +30,17 @@ class _VericasenhaState extends State<Vericasenha> {
                 onSaved: (value) => password = value,
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     print(password);
-                    ReqVerificaSenha().verificaSenha(password!);
+                    String response =
+                        await ReqVerificaSenha().verificaSenha(password!);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialogresponse(response: response);
+                        });
                   }
                 },
                 child: const Text('Login'),
