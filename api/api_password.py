@@ -6,20 +6,14 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Simulando um modelo de ML pré-treinado
-# Aqui utilizaremos um modelo RandomForest simples para ilustrar o conceito
-# Em um caso real, o modelo seria treinado com dados sobre ataques cibernéticos e padrões de senhas
-
-# Treinando o modelo com dados fictícios para fins de exemplo
 def train_model():
-    # Dados de exemplo (neste caso, fictícios) com características de senhas
     X_train = np.array([
-        [8, 1, 1, 1, 0],  # Exemplo de senha fraca
-        [12, 1, 1, 1, 1], # Exemplo de senha moderada
-        [15, 1, 1, 1, 1], # Exemplo de senha forte
-        [6, 0, 0, 1, 0]   # Exemplo de senha muito fraca
+        [8, 1, 1, 1, 0],  
+        [12, 1, 1, 1, 1], 
+        [15, 1, 1, 1, 1], 
+        [6, 0, 0, 1, 0]   
     ])
-    y_train = np.array([0, 1, 1, 0])  # 0 = Vulnerável, 1 = Segura
+    y_train = np.array([0, 1, 1, 0])
     
     model = RandomForestClassifier()
     model.fit(X_train, y_train)
@@ -27,7 +21,6 @@ def train_model():
     joblib.dump(model, 'password_model.pkl')
     return model
 
-# Carrega ou treina o modelo
 try:
     model = joblib.load('password_model.pkl')
 except:
@@ -49,7 +42,6 @@ def analyze_password_strength(password):
         'has_special': has_special
     }
 
-# Rota para avaliar a força da senha
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = request.get_json()
@@ -61,7 +53,6 @@ def analyze():
     strength = analyze_password_strength(password)
     return jsonify(strength)
 
-# Rota para prever vulnerabilidade da senha usando o modelo de ML
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
