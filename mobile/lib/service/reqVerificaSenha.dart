@@ -23,11 +23,15 @@ class ReqVerificaSenha {
   }
 
   Future<String> forcaSenha(String password) async {
-    final url = Uri.parse('http://<your-server-address>/predict');
+    final url = Uri.parse('http://localhost:5000/predict');
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'password': password}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'password': password,
+      }),
     );
 
     if (response.statusCode == 200) {

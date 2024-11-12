@@ -36,14 +36,17 @@ class _VericasenhaState extends State<Vericasenha> {
                     print(password);
                     String response =
                         await ReqVerificaSenha().verificaSenha(password!);
+                    String forte =
+                        await ReqVerificaSenha().forcaSenha(password!);
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return Dialogresponse(response: response);
+                          return Dialogresponse(
+                              response: response, forte: forte);
                         });
                   }
                 },
-                child: const Text('Login'),
+                child: const Text('Verificar'),
               ),
             ],
           ),
